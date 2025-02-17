@@ -39,7 +39,7 @@ public class LookAtAudioSource : MonoBehaviour
             // If the object hit by the ray is the same as the object this script is attached to
             if (hit.collider.gameObject == gameObject)
             {
-                Debug.DrawLine(ray.origin, hit.point, Color.green, 2f);
+                Debug.DrawLine(ray.origin, hit.point - ray.origin, Color.green, 2f, true);
                 Debug.Log($"Ray hit {hit.collider.gameObject.name} at {hit.point}");
 
                 // Convert the hit point to local space
@@ -57,8 +57,7 @@ public class LookAtAudioSource : MonoBehaviour
 
                 if (distance < maxDistance)
                 {
-                    float e = (float) System.Math.E;
-                    volume = Mathf.Pow(e, maxDistance/ distance) - 1; 
+                    volume = 1 - Mathf.Pow(distance / maxDistance, 2);
                 }
                 audioSource.volume = volume;
             }
