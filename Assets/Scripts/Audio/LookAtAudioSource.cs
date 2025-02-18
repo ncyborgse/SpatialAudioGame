@@ -14,6 +14,8 @@ public class LookAtAudioSource : MonoBehaviour
     void Start()
     {
         playerCamera = Camera.main;
+        // Log the tag to ensure this is the correct camera
+
         audioPoint = new GameObject("AudioPoint");
         audioPoint.transform.parent = transform;
 
@@ -24,12 +26,13 @@ public class LookAtAudioSource : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (playerCamera == null) return;
 
         playerCameraTransform = playerCamera.transform;
         Ray ray = new Ray(playerCameraTransform.position, playerCameraTransform.forward);
+        //Debug.DrawLine(playerCameraTransform.forward)
         RaycastHit hit;
 
         // Turn off sound to make sure it doesn't play when not looking at object
@@ -39,16 +42,11 @@ public class LookAtAudioSource : MonoBehaviour
             // If the object hit by the ray is the same as the object this script is attached to
             if (hit.collider.gameObject == gameObject)
             {
-                Debug.DrawLine(ray.origin, hit.point - ray.origin, Color.green, 2f, true);
+                //Debug.DrawLine(ray.origin, hit.point - ray.origin, Color.green, 2f, true);
                 Debug.Log($"Ray hit {hit.collider.gameObject.name} at {hit.point}");
 
-                // Convert the hit point to local space
-
-                Vector3 localHitPoint = transform.InverseTransformPoint(hit.point);
-
-                // Set the audio point to the hit point
-
-                audioPoint.transform.localPosition = localHitPoint;
+                // Move the audio point to the hit point
+                audioPoint.transform.position = hit.point;
 
                 // Turn on sound, louder if closer
 
@@ -57,7 +55,8 @@ public class LookAtAudioSource : MonoBehaviour
 
                 if (distance < maxDistance)
                 {
-                    volume = 1 - Mathf.Pow(distance / maxDistance, 2);
+                    float k = -Mathf.Log(0.01f)/ maxDistance;
+                    volume = Mathf.Exp(-k * distance);
                 }
                 audioSource.volume = volume;
             }
