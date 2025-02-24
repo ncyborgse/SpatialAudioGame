@@ -6,10 +6,14 @@ public class LevelSpawner : MonoBehaviour
 
     public string levelName;
     public AudioSource loadLevelAudio;
+
+    private static bool inputBlocked = false;
+    private static float blockDuration = 5.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
+        StartCoroutine(UnblockAfterDelay());
     }
 
     // Update is called once per frame
@@ -20,9 +24,14 @@ public class LevelSpawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (inputBlocked)
+        {
+            return;
+        }
         if (other.CompareTag("PlayerCollider"))
         {
             PlayerController playerController = other.GetComponent<PlayerController>();
+
 
             if (loadLevelAudio != null)
             {
@@ -35,6 +44,8 @@ public class LevelSpawner : MonoBehaviour
                 // Return to start scene
                 UnityEngine.SceneManagement.SceneManager.LoadScene(levelName);
             }
+
+            inputBlocked = true;
         }
     }
 
@@ -45,6 +56,12 @@ public class LevelSpawner : MonoBehaviour
 
         // Load the scene after the sound finishes
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+    }
+
+    private IEnumerator UnblockAfterDelay()
+    {
+        yield return new WaitForSeconds(blockDuration);
+        inputBlocked = false;
     }
 }
 

@@ -42,9 +42,6 @@ public class LookAtAudioSource : MonoBehaviour
             // If the object hit by the ray is the same as the object this script is attached to
             if (hit.collider.gameObject == gameObject)
             {
-                //Debug.DrawLine(ray.origin, hit.point - ray.origin, Color.green, 2f, true);
-                Debug.Log($"Ray hit {hit.collider.gameObject.name} at {hit.point}");
-
                 // Move the audio point to the hit point
                 audioPoint.transform.position = hit.point;
 
