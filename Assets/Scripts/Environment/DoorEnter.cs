@@ -5,6 +5,7 @@ public class DoorEnter : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public AudioSource audioSource;
+    public AudioSource closedAudio;
     void Start()
     {
 
@@ -36,6 +37,12 @@ public class DoorEnter : MonoBehaviour
                 else { 
                     // Return to start scene
                     UnityEngine.SceneManagement.SceneManager.LoadScene("SelectionScene");
+                }
+            } else
+            {                 // Play a sound to indicate the player does not have the key
+                if (closedAudio != null)
+                {
+                    closedAudio.Play();
                 }
             }
         }
