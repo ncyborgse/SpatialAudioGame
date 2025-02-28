@@ -32,7 +32,7 @@ public class KeyPickup : MonoBehaviour
             if (audioSource != null)
             {
                 audioSource.Play();
-                RequestTextToSpeech("Key collected!");
+                RequestTextToSpeech("Key collected!Find the door.");
             }
 
             // Destroy the key after the sound has played
