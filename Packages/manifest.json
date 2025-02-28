@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.huggingface.api": "https://github.com/huggingface/unity-api.git",
     "com.meta.xr.sdk.audio": "72.0.0",
     "com.meta.xr.sdk.voice": "71.0.0",
     "com.srcnalt.openai-unity": "https://github.com/srcnalt/OpenAI-Unity.git",
